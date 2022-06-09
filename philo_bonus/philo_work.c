@@ -6,7 +6,7 @@
 /*   By: cdoria <cdoria@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 21:23:02 by cdoria            #+#    #+#             */
-/*   Updated: 2022/05/31 20:51:11 by cdoria           ###   ########.fr       */
+/*   Updated: 2022/06/07 20:30:02 by cdoria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@ void	message(t_philo *philo, const char *msg)
 
 void	eating(t_philo *philo)
 {
+	sem_wait(philo->info->death);
 	sem_wait(philo->info->forks);
 	message(philo, "philo is taking left fork\n");
 	sem_wait(philo->info->forks);
 	message(philo, "philo is taking right fork\n");
+	sem_post(philo->info->death);
 	message(philo, "philo is eating\n");
-	sem_wait(philo->info->message);
 	philo->last_eat = get_time();
 	philo->must_eat--;
-	sem_post(philo->info->message);
 	ft_usleep(philo->info->time_to_eat);
 	sem_post(philo->info->forks);
 	sem_post(philo->info->forks);
@@ -48,7 +48,7 @@ void	think(t_philo *philo)
 	message(philo, "philo thinks\n");
 }
 
-void	philo_work(t_philo *philo)
+void	 philo_work(t_philo *philo)
 {
 	pthread_t	thread;
 
@@ -62,4 +62,5 @@ void	philo_work(t_philo *philo)
 		sleeping(philo);
 		think(philo);
 	}
+	exit (4);
 }

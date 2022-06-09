@@ -6,7 +6,7 @@
 /*   By: cdoria <cdoria@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/28 20:53:50 by cdoria            #+#    #+#             */
-/*   Updated: 2022/05/31 20:43:49 by cdoria           ###   ########.fr       */
+/*   Updated: 2022/06/07 20:34:49 by cdoria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,12 @@ void	init_sem(t_info *info)
 	info->forks = sem_open("fork", O_CREAT | O_EXCL, 644, \
 		info->number_of_philosophers);
 	info->message = sem_open("message", O_CREAT | O_EXCL, 644, 1);
+	if (info->death == SEM_FAILED || info->message == SEM_FAILED \
+		|| info->forks == SEM_FAILED)
+	{
+		printf ("sem error\n");
+		exit (0);
+	}
 }
 
 int	init(t_info *info, int argc, char **argv)

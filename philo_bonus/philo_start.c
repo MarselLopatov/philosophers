@@ -6,7 +6,7 @@
 /*   By: cdoria <cdoria@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 20:56:44 by cdoria            #+#    #+#             */
-/*   Updated: 2022/05/31 20:50:44 by cdoria           ###   ########.fr       */
+/*   Updated: 2022/06/07 20:34:28 by cdoria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ void	spectate_pid(t_info *info)
 			break ;
 		}
 	}
-	while (++i < info->number_of_philosophers)
-		kill(info->philo[i].pid, 9);
 }
 
 void	*check_death(void *args)
@@ -48,10 +46,10 @@ void	*check_death(void *args)
 	{
 		if (philo->info->time_to_die <= get_time() - philo->last_eat)
 		{
+			philo->alive = 0;
 			sem_wait(philo->info->death);
 			message(philo, "philo is dead\n");
 			sem_wait(philo->info->message);
-			philo->alive = 0;
 			exit(4);
 		}
 	}
